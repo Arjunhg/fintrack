@@ -1,14 +1,15 @@
 'use client';
 import React from 'react';
 import { useTransactionStore } from '../lib/store';
+import { Transaction } from '../lib/types';
 
 export default function Dashboard() {
   const transactions = useTransactionStore((s) => s.transactions);
 
-  const totalExpenses = transactions.reduce((sum, tx) => sum + tx.amount, 0);
+  const totalExpenses = transactions.reduce((sum: number, tx: Transaction) => sum + tx.amount, 0);
   const recentTransactions = transactions.slice(-3).reverse(); // Last 3 transactions
 
-  const categoryBreakdown = transactions.reduce((acc, tx) => { //total amt in each category
+  const categoryBreakdown = transactions.reduce((acc: Record<string, number>, tx: Transaction) => { //total amt in each category
     acc[tx.category] = (acc[tx.category] || 0) + tx.amount;
     return acc;
   }, {} as Record<string, number>);
@@ -51,7 +52,7 @@ export default function Dashboard() {
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Recent Transactions</h3>
         {recentTransactions.length > 0 ? (
           <div className="space-y-3">
-            {recentTransactions.map((tx) => (
+            {recentTransactions.map((tx: Transaction) => (
               <div key={tx.id} className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
                 <div>
                   <p className="font-medium">{tx.description}</p>

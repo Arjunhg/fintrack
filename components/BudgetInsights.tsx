@@ -4,15 +4,15 @@ import { useTransactionStore } from '../lib/store';
 import { CATEGORIES, Transaction, Budget } from '../lib/types';
 
 function getInsights(transactions: Transaction[], budgets: Budget[], month: string) {
-  const monthBudgets = budgets.filter((b) => b.month === month);
-  const monthTransactions = transactions.filter((tx) => tx.date.startsWith(month));
+  const monthBudgets = budgets.filter((b: Budget) => b.month === month);
+  const monthTransactions = transactions.filter((tx: Transaction) => tx.date.startsWith(month));
   const insights: { category: string; over: boolean; spent: number; budget: number }[] = [];
 
-  CATEGORIES.forEach((category) => {
-    const budget = monthBudgets.find((b) => b.category === category)?.amount || 0;
+  CATEGORIES.forEach((category: string) => {
+    const budget = monthBudgets.find((b: Budget) => b.category === category)?.amount || 0;
     const spent = monthTransactions
-      .filter((tx) => tx.category === category)
-      .reduce((sum, tx) => sum + tx.amount, 0);
+      .filter((tx: Transaction) => tx.category === category)
+      .reduce((sum: number, tx: Transaction) => sum + tx.amount, 0);
     if (budget > 0) {
       insights.push({ category, over: spent > budget, spent, budget });
     }

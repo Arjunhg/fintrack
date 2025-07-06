@@ -12,7 +12,7 @@ interface TransactionState {
   deleteBudget: (id: string) => void;
 }
 
-export const useTransactionStore = create<TransactionState>((set: any) => ({
+export const useTransactionStore = create<TransactionState>((set) => ({
   transactions: [],
   addTransaction: (tx: Omit<Transaction, 'id'>) =>
     set((state: TransactionState) => ({
@@ -38,7 +38,7 @@ export const useTransactionStore = create<TransactionState>((set: any) => ({
       const month = budget.month;
       const category = budget.category;
       const filtered = state.budgets.filter(
-        (b) => !(b.month === month && b.category === category)
+        (b: Budget) => !(b.month === month && b.category === category)
       );
       return {
         budgets: [
