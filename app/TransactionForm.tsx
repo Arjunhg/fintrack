@@ -5,11 +5,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransactionStore } from '../lib/store';
+import { CATEGORIES } from '../lib/types';
 
 const transactionSchema = z.object({
   amount: z.number().min(0.01, 'Amount must be greater than 0'),
   date: z.string().min(1, 'Date is required'),
   description: z.string().min(1, 'Description is required'),
+  category: z.string().min(1, 'Category is required'),
+  // category: z.enum(CATEGORIES, { required_error: "Category is required" }),
 });
 
 type TransactionFormValues = z.infer<typeof transactionSchema>;
@@ -28,6 +31,7 @@ export default function TransactionForm() {
       amount: 0,
       date: '',
       description: '',
+      category: '',
     },
   });
 
@@ -56,6 +60,21 @@ export default function TransactionForm() {
           className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
         />
         {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>}
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-1">Category</label>
+        <select
+          {...register('category')}
+          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
+        >
+          <option value="">Select a category</option>
+          {CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+        {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>}
       </div>
       <div>
         <label className="block text-sm font-medium mb-1">Description</label>
