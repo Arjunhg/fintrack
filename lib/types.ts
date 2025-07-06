@@ -17,4 +17,13 @@ export const CATEGORIES = [
   'Other'
 ] as const;
 
+export type Category = typeof CATEGORIES[number];
+
+export type Budget = {
+  id: string;
+  category: string;
+  amount: number;
+  month: string; // Format: "YYYY-MM"
+};
+
 // export type Category = typeof CATEGORIES[number]; 
